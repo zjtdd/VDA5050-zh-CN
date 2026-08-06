@@ -128,11 +128,13 @@ VDMA 代表欧洲机械与设备工程行业的企业，并在自动化技术、
 本文档描述了车队控制系统与移动机器人之间标准化且供应商中立的通信接口，旨在为多台移动机器人在车队控制系统协调下运行的环境提供通用参考并支持互操作性。本规范的使用是自愿且不具约束力的，是否采用由相关利益相关者自行决定。
 
 本规范的目标包括：
+
 - 降低移动机器人接入车队控制系统时的复杂性。
 - 实现不同制造商异构移动机器人车队在共享物理环境中的协调运行。
 - 提供一套通用且与应用领域无关的接口定义，适用于导航原理、物理尺寸、载荷搬运或操纵能力以及自主程度各不相同的移动机器人。
 
 本规范未涉及以下主题：
+
 - 安全要求：本文件未定义功能安全、运行安全或系统安全要求，不得将其视为或用作安全标准。
 - 交通管理逻辑：本文件不包含交通协调策略、算法或决策过程，例如路径规划、优先级管理、拥堵处理或死锁解决。
 - 其他通信接口：除车队控制系统与移动机器人之间的通信接口外，其他接口均不在本文件范围内，例如与外围设备、基础设施组件或外部 IT 系统连接的接口。
@@ -258,13 +260,15 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 主要涉及以下内容：
 
 - 路线定义：
-通过布局交换格式（LIF），可以将路线导入车队控制。LIF 用于无人驾驶移动机器人系统集成方与（第三方）车队控制系统之间交换布局信息（LIF - 布局交换格式，VDMA 2024-03）。
-运营方也可以在车队控制中手动创建路线。
-路线可以设为单向，也可以根据尺寸比例限制特定移动机器人组使用等。
+  通过布局交换格式（LIF），可以将路线导入车队控制。LIF 用于无人驾驶移动机器人系统集成方与（第三方）车队控制系统之间交换布局信息（LIF – 布局交换格式，VDMA 2024-03）。
+  运营方也可以在车队控制中手动创建路线。
+  路线可以设为单向，也可以根据尺寸比例限制特定移动机器人组使用等。
+
 - 路网配置：
-在路线上定义装卸站、电池充电站、外围设施（门、电梯、道闸）、等待位置、缓冲站等。
+  在路线上定义装卸站、电池充电站、外围设施（门、电梯、道闸）、等待位置、缓冲站等。
+
 - 移动机器人配置：运营方存储移动机器人的物理属性，例如尺寸、可用的载荷承载位置等。
-移动机器人应通过 `factsheet` 主题传输这些信息，具体方式见本文档 [7.10 factsheet 消息的实现](#710-factsheet-消息的实现)。
+  移动机器人应通过 `factsheet` 主题传输这些信息，具体方式见本文档 [7.10 factsheet 消息的实现](#710-factsheet-消息的实现)。
 
 上述路线和路网配置不属于本文档的范围。
 它们是车队控制依据这些信息和待完成的运输需求实施订单控制及分配行驶路线的基础。
@@ -274,6 +278,7 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 ## 5.3 车队控制的功能
 
 车队控制系统至少执行以下功能：
+
 - 向移动机器人分配订单
 - 线导引移动机器人的路线计算与引导（考虑每台移动机器人的物理特性限制，如尺寸、机动性等）
 - 阻塞（“死锁”）的检测与解决
@@ -286,6 +291,7 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 ## 5.4 移动机器人的功能
 
 每台移动机器人应执行以下功能：
+
 - 定位
 - 执行相应路线（线导引或自由导航）
 - 执行动作
@@ -361,7 +367,7 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 
 ```
 {
-	orderId: "1234"
+	orderId: "1234",
 	orderUpdateId:0,
 	nodes: [
 	 	 f {released: true},
@@ -445,7 +451,7 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 
 5) **新订单的起点是否足够接近当前位置？**：移动机器人是否已位于节点上，或处于该节点的偏差范围内（参见 [6.1.1 概念与逻辑](#611-概念与逻辑)）？
 
-6) **收到的订单更新是否已过期？**：`orderUpdateId` 是否小于或等于移动机器人当前持有的值？
+6) **收到的订单更新是否已过期？**：`orderUpdateId` 是否小于移动机器人当前持有的值？
 
 7) **订单更新是否在 `cancelOrder` 之后收到？**：车队控制不得再发送已取消订单的更新，移动机器人也不得接受此类更新。
 
@@ -529,6 +535,7 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 #### 6.1.4.3 移动机器人接收订单时，其无法执行的动作
 
 示例：
+
 - 提升高度高于最大允许提升高度
 - 在未安装升降机构或没有升降行程的情况下要求执行提升动作等
 
@@ -654,11 +661,12 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 这些动作不得与移动机器人当前订单的内容冲突（例如 `instantAction` 要求降下货叉，而订单要求升起货叉）。
 
 即时动作可能相关的一些例子包括：
+
 - 暂停移动机器人，但不更改当前订单
 - 暂停后继续执行订单
 - 激活信号（光学、音频等）
 
-当移动机器人接收到 `instantAction` 时，应在移动机器人状态的 `instantActionStates` 数组中添加适当的 `actionStatus`。
+当移动机器人接收到 `instantAction` 时，应在移动机器人状态的 `instantActionStates` 数组中添加适当的 `actionState`。
 `actionStatus` 应根据动作进展进行更新。
 另见图 11，了解 `actionStatus` 的不同转换。
 即时动作的 `blockingType` 始终为 'NONE'。
@@ -700,7 +708,7 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
 `startPause` | `stopPause` | 启动暂停模式。<br>需要关联状态，因为许多移动机器人可以通过硬件开关暂停。<br>不再允许自动行驶，无需到达下一个节点。可暂停的动作（`pauseAllowed = true`）应暂停，其他动作继续。执行 `stopPause` 后，订单将继续执行。 | 是 | - | `paused` | 是 | 否 | 否 | 否
 `stopPause` | `startPause` | 关闭暂停模式。<br>移动和所有其他动作都会恢复（如有）。<br>需要关联状态，因为许多移动机器人可以通过硬件开关暂停。<br>`stopPause` 还可以重新启动由硬件按钮触发 `startPause` 而停止的移动机器人（如已配置）。 | 是 | - | `paused` | 是 | 否 | 否 | 否
-`startHibernation` | `stopHibernation` | 启动休眠模式。在此模式下，移动机器人应保持与 MQTT 代理的连接，但无需继续发送状态消息。在停止发布状态消息并发布 'HIBERNATING' 连接状态之前，移动机器人应将该动作报告为 'FINISHED'。如果移动机器人有活动订单，则应将其清除。无需到达下一个节点。<br>处于 'HIBERNATING' 连接状态时，移动机器人不得移动。移动机器人只能接收并响应即时动作 `stopHibernation`，不得响应任何其他命令，例如订单或其他即时动作。<br>如果移动机器人的电池在此模式下达到临界低电量，移动机器人可以自主退出 'HIBERNATING' 状态以报告错误。如果设置了唤醒时间，移动机器人可以在指定时间自主退出 'HIBERNATING' 连接状态，并应在恢复正常运行之前发布相应的连接状态转换。 | 是 | `wakeUpTime`（字符串，可选） | - | 是 | 否 | 否 | 否
+`startHibernation` | `stopHibernation` | 启动休眠模式。在此模式下，移动机器人应保持与 MQTT 代理的连接，但无需继续发送状态消息。在停止发布状态消息并发布 'HIBERNATING' 连接状态之前，移动机器人应将该动作报告为 'FINISHED'。如果移动机器人有活动订单，则应将其清除。无需到达下一个节点。<br>处于 'HIBERNATING' 连接状态时，移动机器人不得移动。移动机器人只能接收并响应即时动作 `stopHibernation`，不得响应任何其他命令，例如订单或其他即时动作。<br>如果移动机器人的电池在此模式下达到临界低电量，移动机器人可以自主退出 'HIBERNATING' 状态以报告错误。如果设置了唤醒时间，移动机器人可以在指定时间自主退出 'HIBERNATING' 连接状态，并应在恢复正常运行之前发布相应的连接状态转换。参数 `wakeUpTime` 是时间戳（ISO 8601、UTC），格式为 `YYYY-MM-DDTHH:mm:ss.fffZ`（例如 `"2017-04-15T11:40:03.123Z"`）。 | 是 | `wakeUpTime`（字符串，可选） | - | 是 | 否 | 否 | 否
 `stopHibernation` | `startHibernation` | 结束休眠模式。要在移动机器人处于 'HIBERNATING' 状态时启动唤醒，控制设备（车载或外部）应订阅 `instantActions` 主题并保持与 MQTT 代理的连接。由于移动机器人的标准控制设备在休眠期间可能会部分关闭，因此可以由另一个 MQTT 客户端触发唤醒，该客户端不同于移动机器人通常使用的通信客户端。<br>成功后，移动机器人应发布 'ONLINE' 连接状态。 | 是 | - | - | 是 | 否 | 否 | 否
 `shutdown` | - | 启动移动机器人的协调关机，并断开其与 MQTT 代理的连接。执行 `shutdown` 动作要求移动机器人处于空闲状态。由于连接已终止，无法通过 VDA 5050 协议自动重新启动移动机器人。<br>如果移动机器人处于休眠模式但需要关机，则应先通过 `stopHibernation` 退出休眠，然后再执行 `shutdown`。 | 是 | - | - | 是 | 否 | 否 | 否
 `startCharging` | `stopCharging` | 启动充电过程。<br>充电可以在充电点（移动机器人停车时）或充电通道（行驶时）进行。<br>防止过充的防护是移动机器人的责任。 | 是 | - | `powerSupply.charging` | 是 | 是 | 否 | 否
@@ -716,8 +724,8 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 `clearZoneActions` | - | 移除移动机器人状态中所有已完成或失败的区域动作。 | 是 | - | `zoneActionStates` | 是 | 是 | 否 | 否
 `stateRequest` | - | 请求移动机器人发送新的状态消息。 | 是 | - | - | 是 | 否 | 否 | 否
 `logReport` | - | 请求移动机器人生成并存储日志报告。 | 是 | `reason`（字符串） | - | 是 | 否 | 否 | 否
-`pick` | `drop`<br><br>（自动执行时） | 请求移动机器人拾取载荷。<br>配备多个载荷搬运装置的移动机器人可以并行执行多个拾取动作；在这种情况下，必须提供 `lhd` 参数（例如 `"LHD1"`）。<br>`stationType` 用于说明拾取动作的具体处理方式（例如地面位置、货架位置、无动力输送机或动力输送机）。<br>`loadType` 用于说明载荷单元，例如 `"EPAL"` 或 `"INDU"`，并可用于切换防护区域。<br>为了预先准备载荷搬运装置（例如根据 `height` 参数预先提升），可以提前在预测区中下发该动作。由于关联节点此时尚未释放，预先提升等准备操作不应在移动机器人状态中报告为 'RUNNING'。<br>在边上执行该动作时，移动机器人可以使用传感装置检测与节点相关的拾取位置。 | 否 | `lhd`（字符串，可选）<br>`stationType`（字符串，可选）<br>`stationName`（字符串，可选）<br>`loadType`（字符串，可选）<br>`loadId`（字符串，可选）<br>`height`（float64，可选）<br>定义载荷底部相对于地面的高度<br>`depth`（float64，可选，仅适用于叉车）<br>`side`（字符串，可选），例如 `"conveyor"` | `.load` | 否 | 是 | 是 | 否
-`drop` | `pick`<br><br>（自动执行时） | 请求移动机器人放下载荷。<br>更多详细信息请参见 `pick` 动作。 | 否 | `lhd`（字符串，可选）<br>`stationType`（字符串，可选）<br>`stationName`（字符串，可选）<br>`loadType`（字符串，可选）<br>`loadId`（字符串，可选）<br>`height`（float64，可选）<br>`depth`（float64，可选）<br>… | `.load` | 否 | 是 | 是 | 否
+`pick` | `drop`<br><br>（自动执行时） | 请求移动机器人拾取载荷。<br>配备多个载荷搬运装置的移动机器人可以并行执行多个拾取动作；在这种情况下，必须提供 `loadHandlingDevice` 参数（例如 `"LHD1"`）。<br>`stationType` 用于说明拾取动作的具体处理方式（例如地面位置、货架位置、无动力输送机或动力输送机）。<br>`loadType` 用于说明载荷单元，例如 `"EPAL"` 或 `"INDU"`，并可用于切换防护区域。<br>为了预先准备载荷搬运装置（例如根据 `height` 参数预先提升），可以提前在预测区中下发该动作。由于关联节点此时尚未释放，预先提升等准备操作不应在移动机器人状态中报告为 'RUNNING'。<br>在边上执行该动作时，移动机器人可以使用传感装置检测与节点相关的拾取位置。 | 否 | `loadHandlingDevice`（字符串，可选）<br>`stationType`（字符串，可选）<br>`stationName`（字符串，可选）<br>`loadType`（字符串，可选）<br>`loadId`（字符串，可选）<br>`height`（float64，可选）<br>定义载荷底部相对于地面的高度<br>`depth`（float64，可选，仅适用于叉车）<br>`side`（字符串，可选），例如 `"conveyor"` | `loads` | 否 | 是 | 是 | 否
+`drop` | `pick`<br><br>（自动执行时） | 请求移动机器人放下载荷。<br>更多详细信息请参见 `pick` 动作。 | 否 | `loadHandlingDevice`（字符串，可选）<br>`stationType`（字符串，可选）<br>`stationName`（字符串，可选）<br>`loadType`（字符串，可选）<br>`loadId`（字符串，可选）<br>`height`（float64，可选）<br>`depth`（float64，可选）<br>… | `loads` | 否 | 是 | 是 | 否
 `detectObject` | - | 移动机器人检测物体（例如货物、充电位或空闲停车位）。 | 是 | `objectType`（字符串，可选） | - | 否 | 是 | 是 | 是
 `finePositioning` | - | 在节点上执行时，移动机器人应相对于目标进行精确定位，并允许偏离节点位置。<br>在边上执行时，移动机器人可在沿边行驶的同时与固定设备对齐。 | 是 | `stationType`（字符串，可选）<br>`stationName`（字符串，可选） | - | 否 | 是 | 是 | 是
 `waitForTrigger` | - | 移动机器人应等待 `triggerType` 参数所指定类型的触发信号。`triggerType` 是字符串数组：如果触发信号来自车队控制，应使用预定义值 'FLEET_CONTROL'；如果来自移动机器人上的输入（例如按下按钮或手动装载），应使用 'LOCAL'。如果两个预定义值均不适用，可以定义自定义值。<br>车队控制负责处理超时，并应在必要时取消订单。 | 是 | `triggerType` [字符串]（数组） | - | 否 | 是 | 否 | 是
@@ -742,7 +750,7 @@ topic | string | 主题（例如 `"order"` 或 `"state"`），参见 [4.3 通信
 `shutdown` | - | 正在准备启用 'OFFLINE' 连接状态。如果移动机器人支持即时状态转换，则可以省略此状态。 | - | 移动机器人未移动。移动机器人与代理之间的连接以协调方式终止。<br>移动机器人报告连接状态 'OFFLINE'。 | 由于某种原因无法执行关机（例如移动机器人未处于空闲状态，或被硬件开关覆盖）。 | -
 `startCharging` | - | 正在启用充电过程（正在与充电器通信）。<br>如果移动机器人支持即时状态转换，则可以省略此状态。 | - | 充电过程已启动。<br>移动机器人报告 `powerSupply.charging`：`true`。 | 由于某种原因无法启动充电过程（例如未与充电器对齐）。充电问题应伴随相应错误。 | 无法启动充电过程。移动机器人正在等待车队控制或操作员干预。
 `stopCharging` | - | 正在停用充电过程（正在与充电器通信）。<br>如果移动机器人支持即时状态转换，则可以省略此状态。 | - | 充电过程已停止。<br>移动机器人报告 `powerSupply.charging`：`false` | 由于某种原因无法停止充电过程（例如未与充电器对齐）。<br>充电问题应伴随相应错误。 | -
-`initializePosition` | - | 正在初始化新位姿（置信度检查等）。<br>如果移动机器人支持即时状态转换，则可以省略此状态。 | - | 位姿已重置。<br>移动机器人报告：<br>`mobileRobotPosition.x = x`，<br>`mobileRobotPosition.y = y`，<br>`mobileRobotPosition.theta = theta`，<br>`mobileRobotPosition.mapId = mapId`，<br>`mobileRobotPosition.lastNodeId = lastNodeId` | 位姿无效或无法重置。<br>一般定位问题应伴随相应错误。 | -
+`initializePosition` | - | 正在初始化新位姿（置信度检查等）。<br>如果移动机器人支持即时状态转换，则可以省略此状态。 | - | 位姿已重置。<br>移动机器人报告：<br>`mobileRobotPosition.x = x`，<br>`mobileRobotPosition.y = y`，<br>`mobileRobotPosition.theta = theta`，<br>`mobileRobotPosition.mapId = mapId`，<br>`lastNodeId = lastNodeId` | 位姿无效或无法重置。<br>一般定位问题应伴随相应错误。 | -
 `downloadMap` | 正在初始化与地图服务器的连接。 | 移动机器人正在下载地图。 | - | 下载已完成。移动机器人将该地图的 `mapId`、`mapVersion` 和对应的 `mapStatus` 写入状态，其中 `mapStatus` 设置为 'DISABLED'。 | 下载失败，移动机器人应在状态中反映错误（例如连接中断、地图服务器无法访问，或服务器上不存在指定的 `mapId`/`mapVersion`）。 | 下载失败或中断；移动机器人正在等待车队控制干预。
 `enableMap` | - | 移动机器人正在启用由 `mapId` 和 `mapVersion` 指定的地图，并禁用具有相同 `mapId` 的其他地图版本。 | - | 地图已启用。移动机器人将指定地图的 `mapStatus` 更新为 'ENABLED'，并将相同 `mapId` 的其他版本更新为 'DISABLED'。 | 指定的 `mapId`/`mapVersion` 组合不存在。 | -
 `deleteMap` | - | 移动机器人正在从内部存储中删除由 `mapId` 和 `mapVersion` 指定的地图。 | - | 地图已删除。移动机器人从状态中移除对应的 `mapId`/`mapVersion`。 | 无法删除地图，例如地图正在使用，或指定的 `mapId`/`mapVersion` 组合已被删除。 | -
@@ -842,7 +850,7 @@ x、y 和 z 坐标应以米为单位表示。
 区域用于为移动机器人工作区中的特定范围定义规则。区域既允许移动机器人在节点之间自由导航，也使车队控制能够管理交通。区域可用于局部禁止移动机器人进入某些范围，或将准入与条件关联起来（区域类型：'BLOCKED' 和 'RELEASE'）。区域还可用于强制移动机器人在区域内遵循特定行为（区域类型：'LINE_GUIDED'、'SPEED_LIMIT'、'COORDINATED_REPLANNING' 和 'ACTION'），通过奖励或惩罚某些范围来影响行驶行为（区域类型：'PRIORITY' 和 'PENALTY'），或规定行驶方向（区域类型：'DIRECTED' 和 'BIDIRECTED'）。以下小节将定义这些区域类型。
 
 由区域重叠或区域属性与边属性组合引起的潜在订单冲突及其解决方法，见 [6.4.4 区域之间的交互](#644-区域之间的交互)。对于订单中已释放但受区域限制的节点（例如位于 'BLOCKED' 或 'RELEASE' 区域内的节点），机器人应按照区域规则行动，例如不得进入，或等待请求状态变为 'GRANTED'。
-有些移动机器人完全无法处理区域，而另一些移动机器人可能只能处理部分区域类型，例如 'BLOCKED'。因此，所有移动机器人都应在信息表中 `typeSpecifications` 下的 `supportedZones` 数组中添加相应的区域名称，以向车队控制报告其能够理解的区域类型。
+有些移动机器人完全无法处理区域，而另一些移动机器人可能只能处理部分区域类型，例如 'BLOCKED'。因此，所有移动机器人都应在信息表中 `typeSpecification` 下的 `supportedZones` 数组中添加相应的区域名称，以向车队控制报告其能够理解的区域类型。
 此外，（虚拟）线导引移动机器人如果能够实现下文定义的相应区域类型逻辑，也可以选择支持基于区域的导航。
 为保持系统一致性，区域集只应由车队控制更改和分发。
 
@@ -864,7 +872,7 @@ x、y 和 z 坐标应以米为单位表示。
 | BLOCKED | 无 |  | 移动机器人不得进入该区域。如果移动机器人已进入或发现自身位于该区域内，应立即停止，并报告类型为 'BLOCKED_ZONE_VIOLATION'、级别为 'CRITICAL' 的错误。 |
 | LINE_GUIDED | 无 |  | 该区域内不允许自由导航，移动机器人必须沿边的预定义轨迹行驶。只有当车队控制以节点-边图的形式明确指定路线时，移动机器人才可进入该区域。进入区域时，移动机器人应位于穿越该区域的边轨迹上。进入该区域的边以及位于区域内的边，都必须具有车队控制下发的轨迹或移动机器人上的预定义轨迹。车队控制可以下发走廊，允许移动机器人在走廊范围内偏离轨迹。 |
 | RELEASE |  | - | 移动机器人只有在通过车队控制获得许可后才能进入该区域。 |
-|  | releaseLossBehavior | string | 枚举 {'STOP', 'CONTINUE', 'EVACUATE'}<br>当移动机器人已位于区域内，且该区域的通行许可被撤销或过期时，移动机器人应按照此参数处理。如果未定义该参数，预期移动机器人执行 'STOP' 并报告错误。<br>'STOP'：移动机器人停止，并报告类型为 'RELEASE_LOST'、级别为 'CRITICAL' 的错误。<br>'EVACUATE'：移动机器人执行自身的撤离流程以离开区域；在离开区域之前，状态中应保留原先授予通行许可的 `zoneRequest` 对象。<br>'CONTINUE'：移动机器人继续沿当前路径行驶，并在状态中保留原先授予通行许可的 `zoneRequest` 对象。如果订单在区域内结束，移动机器人应等待新订单。 |
+|  | *releaseLossBehavior* | string | 枚举 {'STOP', 'CONTINUE', 'EVACUATE'}<br>定义移动机器人已位于该区域内时，该区域的通行许可被撤销或过期后移动机器人的行为。如果未定义该参数，移动机器人应按照定义为 'STOP' 时的方式处理。<br>'STOP'：移动机器人停止行驶，并报告类型为 'RELEASE_LOST'、级别为 'CRITICAL' 的错误。<br>'EVACUATE'：移动机器人执行自身的撤离行为以离开该区域。移动机器人在状态中保留该请求，相应地将其 `requestStatus` 设置为 'REVOKED' 或 'EXPIRED'，并持续报告类型为 'RELEASE_LOSS_HANDLING'、级别为 'WARNING' 的错误，直至离开该区域。<br>'CONTINUE'：移动机器人继续沿当前路径行驶。移动机器人在状态中保留该请求，相应地将其 `requestStatus` 设置为 'REVOKED' 或 'EXPIRED'，并持续报告类型为 'RELEASE_LOSS_HANDLING'、级别为 'WARNING' 的错误，直至离开该区域或订单在该区域内结束。如果订单在该区域内结束，移动机器人应等待新订单。 |
 | COORDINATED_REPLANNING | 没有 |  | 该区域内不允许自主重新规划。移动机器人只有在获得车队控制许可后才允许调整路径。 |
 | SPEED_LIMIT |  |  | 移动机器人不得超过该区域内规定的最大速度。 |
 |  | maximumSpeed | float64 | 移动机器人在该区域内的最大允许速度（m/s）。进入该区域时，应已满足该限速要求。 |
@@ -911,7 +919,7 @@ x、y 和 z 坐标应以米为单位表示。
 如果移动机器人通过 `zoneSet` 主题或 `downloadZoneSet` 即时动作接收到与现有区域集具有相同 `zoneSetId` 的新区域集，则不得用该区域集替换内部存储器中的区域集，并应在一段合理时间内报告类型为 'DUPLICATE_ZONE_SET'、级别为 'WARNING' 的错误，以便车队控制发现区域集更新失败。
 
 
-## 6.4.3 交互式区域通信
+### 6.4.3 交互式区域通信
 
 对于 'RELEASE' 和 'COORDINATED_REPLANNING' 两类交互式区域，移动机器人通过状态消息中的 `zoneRequests` 字段发出请求，车队控制通过独立的 `responses` 主题响应。
 
@@ -947,7 +955,8 @@ x、y 和 z 坐标应以米为单位表示。
 对于 'RELEASE' 区域，移动机器人与车队控制之间的交互应符合图 16。
 
 移动机器人停留在 'RELEASE' 区域内时，应在状态中保留 `zoneRequest` 对象，并持续将 `requestStatus` 报告为 'GRANTED'，以通知车队控制其仍在该区域内。移动机器人离开区域后，应从状态消息中移除相应的 `zoneRequest` 条目。
-收到 `grantType` 为 'REVOKED' 的响应时，移动机器人应从状态中移除该请求。`leaseExpiry` 到期后，应将 `requestStatus` 设置为 'EXPIRED'，并且不得进入该区域。如果 `leaseExpiry` 已到期或请求被 'REVOKED' 时移动机器人已经位于 'RELEASE' 区域内，则应报告警告，并按照区域定义中的 `releaseLossBehavior` 作出反应。
+如果移动机器人尚未进入 'RELEASE' 区域，而此时收到 `grantType` 为 'REVOKED' 的响应或 `leaseExpiry` 已到期，则应从状态中移除该请求，并且不得进入该区域。
+如果移动机器人已经位于 'RELEASE' 区域内，而此时收到 `grantType` 为 'REVOKED' 的响应或 `leaseExpiry` 已到期，则应按照区域定义中的 `releaseLossBehavior` 作出反应。移动机器人应在状态中保留该请求，并相应地将 `requestStatus` 设置为 'REVOKED' 或 'EXPIRED'，直至离开该区域或重新获得通行许可。若要再次进入该区域，移动机器人应发出新请求。
 
 ![图 16 RELEASE 区域的区域请求行为](./assets/request_release_zone_access.png)
 >图 16 - 'RELEASE' 区域的区域请求行为
@@ -955,7 +964,8 @@ x、y 和 z 坐标应以米为单位表示。
 对于 'COORDINATED_REPLANNING' 区域，移动机器人与车队控制之间的交互应符合图 17。
 
 移动机器人应从所有已获得 'GRANTED' 响应的请求中选择一条轨迹，将对应请求的 `requestStatus` 设置为 'GRANTED'，并从状态中移除其他请求。
-收到 `grantType` 为 'REVOKED' 的响应时，移动机器人应从状态中移除该请求，且不得进入 'COORDINATED_REPLANNING' 区域。`leaseExpiry` 到期后，应将 `requestStatus` 设置为 'EXPIRED'，并且不得进入该区域。如果 `leaseExpiry` 已到期或请求被 'REVOKED' 时移动机器人已经位于 'RELEASE' 区域内，则应停止行驶并报告警告。要继续行驶，移动机器人应发出新请求。
+如果移动机器人尚未进入 'COORDINATED_REPLANNING' 区域，而此时收到 `grantType` 为 'REVOKED' 的响应或 `leaseExpiry` 已到期，则应从状态中移除该请求，并且不得进入该区域。
+如果移动机器人已经位于 'COORDINATED_REPLANNING' 区域内，而此时收到 `grantType` 为 'REVOKED' 的响应或 `leaseExpiry` 已到期，则应停止行驶，并报告类型为 'RELEASE_LOST'、级别为 'CRITICAL' 的错误。移动机器人应在状态中保留该请求，并相应地将 `requestStatus` 设置为 'REVOKED' 或 'EXPIRED'，直至离开该区域或重新获得通行许可。若要继续沿当前路径穿越该区域，移动机器人应发出新请求。
 
 ![图 17 COORDINATED_REPLANNING 区域的区域请求行为](./assets/request_coordinated_replanning_zone_replanning.png)
 >图 17 - 'COORDINATED_REPLANNING' 区域的区域请求行为
@@ -967,7 +977,7 @@ x、y 和 z 坐标应以米为单位表示。
 
 |  | **BLOCKED** | **RELEASE** | **LINE_GUIDED** | **COORDINATED_REPLANNING** | **SPEED_LIMIT** | **ACTION** | **PRIORITY** | **PENALTY** | **DIRECTED** | **BIDIRECTED** | **无区** | **EDGE-PROPERTIES**
 --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | ---
-**BLOCKED** | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED |
+**BLOCKED** | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED | BLOCKED
 **RELEASE** |  | 无冲突 | 无冲突 | 无冲突 | 无冲突 | 无冲突 | 无冲突 | 无冲突 | 无冲突 | 无冲突 | 无冲突 | 无冲突
 **LINE_GUIDED** |  |  | 没有冲突 | LINE_GUIDED | 无冲突 | (1) | LINE_GUIDED | LINE_GUIDED | LINE_GUIDED | 没有冲突 | LINE_GUIDED | 没有冲突
 **COORDINATED_REPLANNING** |  |  |  | (2) | 没有冲突 | (1) | 没有冲突 | 没有冲突 | 没有冲突 | 没有冲突 | COORDINATED_REPLANNING | (3)
@@ -1028,9 +1038,10 @@ x、y 和 z 坐标应以米为单位表示。
 当相关事件发生时，移动机器人状态消息应发布一次，或至少每 30 秒发布一次。
 
 以下事件应触发状态消息的传输：
+
 - 接收订单
 - 收到订单更新
-- `load` 对象的变化
+- `loads` 数组的变化
 - `errors` 数组的变化
 - `operatingMode` 字段的变化
 - `driving` 字段的变化
@@ -1161,7 +1172,8 @@ x、y 和 z 坐标应以米为单位表示。
 'DUPLICATE_MAP' | 'WARNING' | 收到的地图具有已经存在的 `mapId` 和 `mapVersion`。 | 重复的 `mapId` 和 `mapVersion` | 直到接受新的地图相关 `instantAction`。
 'BLOCKED_ZONE_VIOLATION' | 'CRITICAL' | 进入 'BLOCKED' 区域。 | `zoneId` | 直到移动机器人不再位于 'BLOCKED' 区域内。
 'DUPLICATE_ZONE_SET' | 'WARNING' | 接收到 `zoneSetId` 已存在的区域集。 | `zoneSetId` 或 `instantAction` 的 `actionId` | 足以让车队控制注意到区域更新失败的合理时长。
-'RELEASE_LOST' | 'CRITICAL' | 失去 'RELEASE' 区域的通行许可。 | `zoneId` | 直到移动机器人不再位于 'RELEASE' 区域内，或再次获得通行许可。
+'RELEASE_LOSS_HANDLING' | 'WARNING' | 移动机器人位于 'RELEASE' 区域内时失去通行许可后，正在执行 'EVACUATE' 或 'CONTINUE' 释放丢失行为。 | `zoneId` | 直到移动机器人离开该区域、再次获得通行许可，或订单在该区域内结束。
+'RELEASE_LOST' | 'CRITICAL' | 移动机器人位于 'RELEASE' 或 'COORDINATED_REPLANNING' 区域内时，因失去通行许可而在区域内停止。 | `zoneId` | 直到移动机器人离开该区域，或再次获得通行许可。
 'ZONE_ACTION_CONFLICT' | 'CRITICAL' | 区域行为与区域动作之间的冲突。 | 'ACTION'区 `zoneId` | 直到移动机器人不再违反区域行为。
 'NODE_UNREACHABLE' | 'CRITICAL' | 移动机器人无法按其订单到达节点。 | `nodeId` | 直到新订单被接受。
 'LOCALIZATION_ERROR' | 'FATAL' | 移动机器人未定位。 |  | 直到重新获得定位。
@@ -1170,6 +1182,10 @@ x、y 和 z 坐标应以米为单位表示。
 'START_NODE_OUT_OF_RANGE' | 'WARNING' | 收到首个节点不可到达的订单。 | `orderId` | 直到接受新订单。
 'MOBILE_ROBOT_NOT_AVAILABLE' | 'WARNING' | 在非 'AUTOMATIC'、'SEMIAUTOMATIC' 或 'INTERVENED' 操作模式下收到订单。 | `orderId` | 直到操作模式允许接收新订单
 'UNKNOWN_MAP_ID' | 'WARNING' | 收到包含引用未知 `mapId` 的节点的订单。 | `orderId` | 直到接受新订单。
+'INSTANT_ACTION_STATES_FULL' | 'URGENT' | `instantActionStates` 数组过长，难以管理。 | - | 直到车队控制清除此列表。
+'ZONE_ACTION_STATES_FULL' | 'URGENT' | `zoneActionStates` 数组过长，难以管理。 | - | 直到车队控制清除此列表。
+
+>表 9 - 预定义错误类型
 
 
 ### 6.6.6 操作模式
@@ -1188,7 +1204,7 @@ STARTUP | 车队控制不控制移动机器人。移动机器人正在启动，�
 SERVICE | 车队控制不控制移动机器人。<br>车队控制不得向移动机器人发送订单或动作。<br>进入该模式时，移动机器人应立即清除当前订单，并将 `lastNodeId` 设置为空字符串（""）。<br>授权人员可以重新配置移动机器人。
 TEACH_IN | 车队控制不控制移动机器人。<br>车队控制不得向移动机器人发送订单或动作。<br>进入该模式时，移动机器人应立即清除当前订单，并将 `lastNodeId` 设置为空字符串（""）。<br>移动机器人处于示教过程中，例如由操作员执行地图绘制。
 
->表 9 - 移动机器人的操作模式
+>表 10 - 移动机器人的操作模式
 
 
 操作模式 | 车队控制是否控制 | 状态消息内容是否有效 | 进入时是否清除订单 | 是否将 `lastNodeId` 设为空 | 进入时是否清除区域请求 | 是否允许发送即时动作 | 是否允许发送订单
@@ -1196,12 +1212,12 @@ TEACH_IN | 车队控制不控制移动机器人。<br>车队控制不得向移�
 AUTOMATIC | 是 | 是 | 否 | 否 | 否 | 是 | 是
 SEMIAUTOMATIC | 是 | 是 | 否 | 否 | 否 | 是 | 是
 INTERVENED | 否 | 是 | 否 | 否 | 是 | 仅允许 `cancelOrder` | 是
-MANUAL | 否 | 是 | 是 | 是，如果订单无法继续 | 是 | 否 | 否
+MANUAL | 否 | 是 | 是 | 是，如果无法再开始新订单 | 是 | 否 | 否
 STARTUP | 否 | 否 | 是 | 是 | 是 | 否 | 否
 SERVICE | 否 | 是 | 是 | 是 | 是 | 否 | 否
 TEACH_IN | 否 | 是 | 是 | 是 | 是 | 否 | 否
 
->表 10 - 操作模式概述及其影响
+>表 11 - 操作模式概述及其影响
 
 
 ### 6.6.7 清除移动机器人上的订单
@@ -1222,7 +1238,7 @@ TEACH_IN | 否 | 是 | 是 | 是 | 是 | 否 | 否
 - `nodeStates` 和 `edgeStates` 数组应设置为空列表。
 - 所有请求都应从状态中移除。
 
-只要订单中仍有动作尚未处于 'FINISHED' 或 'FAILED' 状态，移动机器人就不得报告 'MANUAL'、'SERVICE' 或 'TEACH_IN' 操作模式。在报告 'MANUAL'、'SERVICE' 或 'TEACH_IN' 操作模式之前，不得清空 `nodeStates` 和 `edgeStates`。
+只要订单中仍有动作尚未处于 'FINISHED' 或 'FAILED' 状态，移动机器人就不得报告 'MANUAL'、'SERVICE' 或 'TEACH_IN' 操作模式。在报告 'MANUAL'、'SERVICE'、'STARTUP' 或 'TEACH_IN' 操作模式之前，不得清空 `nodeStates` 和 `edgeStates`。
 
 订单取消只能由车队控制触发。
 
@@ -1238,19 +1254,19 @@ TEACH_IN | 否 | 是 | 是 | 是 | 是 | 否 | 否
 当移动机器人收到 `instantAction` 时，应在 `instantActionStates` 数组中使用相应的 `actionState` 报告该动作。
 当移动机器人执行 `zoneAction` 时，应在 `zoneActionStates` 数组中使用相应的 `actionState` 报告该动作。移动机器人也可以选择在此报告任何已计划的 `zoneAction`。
 
-动作当前阶段应反映在对应 `actionState` 的 `actionStatus` 字段中（见表 11）。
+动作当前阶段应反映在对应 `actionState` 的 `actionStatus` 字段中（见表 12）。
 
 actionStatus | 描述
 --- | ---
 'WAITING' | 移动机器人已收到动作，但对应节点尚未遍历或对应边尚未进入。
 'INITIALIZING' | 动作被触发，准备措施启动。
 'RUNNING' | 动作正在进行。
-'PAUSED' | 动作因暂停即时动作或外部触发器（移动机器人上的暂停按钮）而暂停。
+'PAUSED' | 动作因 `startPause` 即时动作或外部触发器（移动机器人上的暂停按钮）而暂停。
 'RETRIABLE' | 动作执行失败但可以重试，这由订单动作中的 `retriable` 参数指定。通过 `retry` 或 `skipRetry` 即时动作或外部触发器触发从该状态的转换。
 'FINISHED' | 动作结束了。<br>结果通过 `actionResult` 报告。
 'FAILED' | 无论出于什么原因，动作都无法完成。
 
->表 11 - `actionStatus` 字段的可行值
+>表 12 - `actionStatus` 字段的可行值
 
 图 21 展示了所有可能的动作状态转换，下表给出了相应示例：
 
@@ -1264,7 +1280,7 @@ actionStatus | 描述
 | **RUNNING** | - | - | 外部触发器 | - | 动作未成功完成，但可重试 | 因取消而中止、切换到手动模式，或动作最终因未返回预期结果而失败 | 动作返回预期结果；如果动作无法中断而必须执行完毕，也可能在通过 `cancelOrder` 中止订单后进入此状态。 |
 | **RETRIABLE** | - | 通过 `retry` 重试动作或由外部触发器触发 | - | 通过 `retry` 重试动作或由外部触发器触发 | - | 通过 `skipRetry`、`cancelOrder`、外部触发器或切换到手动模式而失败 | 操作员通过外部输入修复问题 |
 
->表 12 - 可能的动作状态转换示例
+>表 13 - 可能的动作状态转换示例
 
 ![图 21 actionStates 的所有可能状态转换](./assets/action_state_transition.png)
 >图 21 - `actionStates` 的所有可能状态转换
@@ -1303,8 +1319,10 @@ actionStatus | 描述
 自由导航的移动机器人应通过状态消息向车队控制系统传达其规划轨迹。需要以更高频率共享时，可以使用 `visualization` 主题。
 
 移动机器人共享的 `intermediatePath` 表示到达较近航点的预计时间，这些航点是移动机器人能够通过传感器感知的；`plannedPath` 则表示移动机器人当前活动订单中的一段较长路径。无论订单包含哪些节点，两条路径都应从移动机器人的当前位置开始。共享路径的长度可能取决于具体情况，因此可由移动机器人决定。如果移动机器人采用自由导航，则应在每条状态消息中同时共享 `intermediatePath` 和 `plannedPath`。
+
 - `plannedPath` 按照 `edgeState` 的 `trajectory` 字段定义为 NURBS。`plannedPath` 可以包含一个节点数组，这些节点通过各自的 `nodeId` 引用，并将作为当前路径的一部分被遍历。移动机器人的 `plannedPath` 发生显著变化时应予以更新。`plannedPath` 应至少覆盖移动机器人当前的基础区。
 - `intermediatePath` 被定义为折线。该折线由航点之间的线段组成。每个 `waypoint` 包括其 `x` 和 `y` 位置、移动机器人的可选方向以及指示预计到达时间的 `ETA`。
+
 `intermediatePath` 应随着每次发送的状态或可视化消息更新，并且始终从移动机器人当前位置开始。
 
 参数 `plannedPath` 和 `intermediatePath` 应仅用于移动机器人规划的轨迹。`edgeState` 中的 `trajectory` 字段应仅用于“确认”已经在布局或订单中预先定义的轨迹。
@@ -1327,12 +1345,15 @@ actionStatus | 描述
 - 一个 `requestStatus`。
 
 字段 `requestStatus` 描述请求的生命周期，并应支持以下值：
+
 - 'REQUESTED'：移动机器人发出请求。
 - 'GRANTED'：车队控制批准了请求。
 - 'REVOKED'：车队控制撤销之前批准的请求。
 - 'EXPIRED'：请求已过期。
 - 'QUEUED'：车队控制确认收到移动机器人的请求，但尚未授予许可。请求已被加入某种队列。
+
 车队控制接收来自状态主题的请求，并应通过包含响应对象的 `responses` 主题来回答，该对象包括：
+
 - 相应请求的 `requestId`，
 - 一个取值为 'GRANTED'、'QUEUED'、'REJECTED' 或 'REVOKED' 的决定，以及
 - 可选的 `leaseExpiry` 时间戳，用于限制 'GRANTED' 决定的有效期。
@@ -1341,8 +1362,8 @@ actionStatus | 描述
 
 如果请求收到 'GRANTED' 响应，则移动机器人可以按照请求类型的语义执行所请求的操作。如果存在 `leaseExpiry`，则许可应仅在该时间之前视为有效。车队控制可以发送具有相同 `requestId` 和新 `leaseExpiry` 的更新响应来延长许可有效期。
 
-如果请求被回答为 'REVOKED'，或达到 `leaseExpiry`，移动机器人应按照为请求资源定义的 `releaseLossBehavior` 行动。
-如果所请求的操作已经开始，移动机器人应相应地将 `requestStatus` 更新为 'REVOKED' 或 'EXPIRED'，并将该请求保留在状态中，直到 `releaseLossBehavior` 执行完毕。如果所请求的操作尚未开始，移动机器人应从状态中移除该请求。
+如果请求被回答为 'REVOKED'，或达到 `leaseExpiry`，移动机器人应按照请求资源定义的 `releaseLossBehavior`（释放丢失处理）行动。
+如果所请求的操作已开始，移动机器人应将该请求保留在状态中，并相应地将 `requestStatus` 设置为 'REVOKED' 或 'EXPIRED'，直到为请求资源定义的释放丢失处理完成。如果所请求的操作尚未开始，移动机器人应立即从状态中移除该请求。
 
 如果在应用要求的时间范围内未收到响应，移动机器人应按照请求尚未获批的情况行动，不得执行需要明确许可的操作。超时和重试的处理应在集成期间定义。
 
@@ -1382,7 +1403,7 @@ standard | 变量是基本数据类型
 ***italic and bold*** | 变量为可选，且为非基本数据类型
 arrayName[arrayDataType] | 变量（此处为 `arrayName`）是由方括号内所示数据类型组成的数组（此处的数据类型为 `arrayDataType`）
 
->表 13 - 表格符号及格式含义
+>表 14 - 表格符号及格式含义
 
 所有关键词均以大小写区分。
 所有字段名称均采用 `camelCase`。
@@ -1469,7 +1490,7 @@ orderUpdateId |  | uint32 | 订单更新标识符。<br>`orderUpdateId` 在每�
 **node** { |  | JSON object |
 nodeId |  | string | 节点的唯一标识符。<br>同一节点可以在一个订单消息中多次被引用。`sequenceId` 用于区分穿越序列。
 sequenceId |  | uint32 | 用于跟踪订单中节点和边的顺序，并简化订单更新的编号。<br>其主要用途是区分同一 `orderId` 中多次经过的同一节点。<br>`sequenceId` 由节点和边共享，并定义遍历顺序。
-*nodeDescriptor* |  | string | 关于该节点的额外信息。
+*nodeDescriptor* |  | string | 一个用户定义、人类可读的名称或描述符。此信息不得用于逻辑目的。
 released |  | boolean | `true` 表示该节点是基础区的一部分。<br>`false` 表示该节点属于预测区。
 ***nodePosition*** |  | JSON object | 节点位置。<br>对于不需要节点位置的移动机器人类型（例如线导引移动机器人），这是可选的。
 **actions [action]**<br> } |  | array | 要在节点上执行的动作数组。<br>如果无需执行动作，则为空数组。
@@ -1480,9 +1501,9 @@ released |  | boolean | `true` 表示该节点是基础区的一部分。<br>`fa
 x | m | float64 | 地图上相对于项目特定全局坐标系的 x 位置。<br>精度取决于具体实现。
 y | m | float64 | 地图上相对于项目特定全局坐标系的 y 位置。<br>精度取决于具体实现。
 *theta* | rad | float64 | 范围：[-Pi ... Pi]<br><br>移动机器人在节点处应达到的绝对朝向角；达到该朝向角后，该节点才被视为已遍历。<br>如果定义了该值，移动机器人应在此节点处达到该朝向角。<br>如果前一条边不允许旋转，移动机器人应在节点上旋转。<br>如果后一条边定义了不同的朝向角且不允许在边上旋转，则移动机器人应在进入该边之前，在节点上旋转到后一条边要求的朝向角。
-***allowedDeviationXY*** | m | JSON object | 指示移动机器人必须以多高的位置精度匹配节点，节点才被视为已遍历。<br>另见 [订单取消](#613-订单取消) 和 [节点与边的遍历](#662-节点与边的遍历)。
+***allowedDeviationXY*** | m | JSON object | 指示移动机器人必须以多高的位置精度匹配节点，节点才被视为已遍历。<br>另见 [6.6.2 节点与边的遍历](#662-节点与边的遍历)。
 *allowedDeviationTheta* | rad | float64 | 范围：[0.0 ... Pi]<br><br>如果定义，则指示移动机器人必须以多高的朝向角精度匹配节点，节点才被视为已遍历。<br>可接受的最小角度为 *`theta` - `allowedDeviationTheta`*，最大角度为 *`theta` + `allowedDeviationTheta`*。如果未指定 `theta`，则对移动机器人的朝向角没有要求。<br>如果该值为 0.0，则不允许偏差，即移动机器人应在技术能力允许的范围内尽可能精确地达到节点规定的朝向角。即使 `allowedDeviationTheta` 小于移动机器人的技术公差，此规则仍然适用。如果移动机器人支持该属性，但车队控制未为此节点定义该属性，则移动机器人应假定其值为 0.0。
-mapId |  | string | 该位置所引用地图的唯一标识符。<br>每张地图都具有同一个项目特定的全局坐标原点。<br>当移动机器人使用电梯（例如从出发楼层前往目标楼层）时，它会从出发楼层的地图上消失，并出现在目标楼层地图中对应的电梯节点上。
+mapId<br>} |  | string | 该位置所引用地图的唯一标识符。<br>每张地图都具有同一个项目特定的全局坐标原点。<br>当移动机器人使用电梯（例如从出发楼层前往目标楼层）时，它会从出发楼层的地图上消失，并出现在目标楼层地图中对应的电梯节点上。
 
 对象结构 | 单位 | 数据类型 | 描述
 --- | --- | --- | ---
@@ -1597,7 +1618,7 @@ serialNumber | string | 移动机器人的序列号。
 | --- | --- | --- |
 | response<br> { | JSON object | 包含车队控制对特定请求的回答的对象。 |
 | requestId | string | 在每台移动机器人的所有活动请求中保持唯一的标识符。 |
-| grantType | enum | 枚举 {'GRANTED', 'QUEUED', 'REVOKED', 'REJECTED'}<br>'GRANTED'：车队控制已批准请求。'REVOKED'：车队控制撤销之前批准的请求。'REJECTED'：车队控制拒绝请求。'QUEUED'：车队控制确认收到移动机器人的请求，但尚未授予许可；该请求已被加入某种队列。 |
+| grantType | enum | 枚举 {'GRANTED', 'QUEUED', 'REVOKED', 'REJECTED'}<br>'GRANTED'：车队控制已批准请求。<br>'QUEUED'：车队控制确认收到移动机器人的请求，但尚未授予许可；该请求已被加入某种队列。<br>'REVOKED'：车队控制撤销之前批准的请求。<br>'REJECTED'：车队控制拒绝请求。 |
 | *leaseExpiry*<br><br> } | string | 时间戳（ISO 8601、UTC），格式为 `YYYY-MM-DDTHH:mm:ss.fffZ`（例如 `"2017-04-15T11:40:03.123Z"`）。授权到期时间戳只能随批准请求的响应发送。 |
 
 
@@ -1614,10 +1635,10 @@ serialNumber | string | 移动机器人的序列号。
 
 | 对象结构 | 数据类型 | 描述 |
 | --- | --- | --- |
-| zoneSet{ | JSON object | 详细描述特定地图的区域集。 |
+| zoneSet { | JSON object | 详细描述特定地图的区域集。 |
 | mapId | string | 该区域集所描述地图的全局唯一标识符。 |
 | zoneSetId | string | 区域集的全局唯一标识符。 |
-| **zones[zone]** <br> } | array | 区域对象数组。 | 
+| **zones[zone]** <br> } | array | 区域对象数组。 |
 | *zoneSetDescriptor* | string | 一个用户定义、人类可读的名称或描述符。此信息不得用于逻辑目的。 |
 
 单个区域对象具有以下结构：
@@ -1646,7 +1667,7 @@ serialNumber | string | 移动机器人的序列号。
 对象结构 | 单位 | 数据类型 | 描述
 --- | --- | --- | ---
 **zoneAction** { |  | JSON object | 描述移动机器人能够执行的动作。
-actionType |  | string | “动作和参数”表第一列所述的动作名称。<br>用于标识动作的功能。
+actionType |  | string | 表 4 第一列所述的动作名称。<br>用于标识动作的功能。
 *actionDescriptor* |  | string | 一个用户定义、人类可读的名称或描述符。此信息不得用于逻辑目的。
 blockingType |  | string | 枚举 {'NONE', 'SINGLE', 'SOFT', 'HARD'}：<br>'NONE'：允许行驶和执行其他动作；<br>'SINGLE'：允许行驶，但不允许执行其他动作；<br>'SOFT'：允许执行其他动作，但不允许行驶；<br>'HARD'：该动作是此时唯一允许执行的动作。
 ***actionParameters [actionParameter]*** |  | array | 指定动作的 `actionParameter` 对象数组，例如 `deviceId`、`loadId`、`external triggers`。<br><br>实现示例见 [7.3.1 动作参数格式](#731-动作参数格式)。
@@ -1683,7 +1704,7 @@ version |  | string | 协议版本 `[Major].[Minor].[Patch]`（例如 `"1.3.2"`�
 manufacturer |  | string | 移动机器人制造商。
 serialNumber |  | string | 移动机器人的序列号。
 ***maps[map]*** |  | array | 当前存储在移动机器人上的地图对象数组。
-***zoneSets[zoneSet]*** |  | zoneSet 对象数组 | 当前存储在移动机器人上的 `zoneSet` 对象数组。
+***zoneSets[zoneSet]*** |  | array | 当前存储在移动机器人上的 `zoneSet` 对象数组。
 orderId |  | string | 当前订单或上一个已完成订单的唯一标识。<br>`orderId` 会保留到收到新订单为止。<br>如果没有可用的上一个 `orderId`，则为空字符串（`""`）。
 orderUpdateId |  | uint32 | 用于表明移动机器人已接受订单更新的订单更新标识符。<br>如果没有之前的 `orderUpdateId`，则为 `0`。
 lastNodeId |  | string | 最后到达节点的节点 ID；如果移动机器人当前位于节点上，则为当前节点的 ID（例如 `"node7"`）。如果没有可用的 `lastNodeId`，则为空字符串（`""`）。
@@ -1701,7 +1722,7 @@ driving |  | boolean | `true`：表示移动机器人正在行驶（手动或自
 ***zoneRequests [zoneRequest]*** |  | array | 移动机器人上当前处于活动状态的 `zoneRequest` 对象数组。<br>如果没有活动的区域请求，则为空数组。
 ***edgeRequests [edgeRequest]*** |  | array | 移动机器人上当前处于活动状态的 `edgeRequest` 对象数组。<br>如果没有活动的边请求，则为空数组。
 *distanceSinceLastNode* | m | float64 | 线导引移动机器人用于指示其驶过 `lastNodeId` 所标识节点之后的距离。<br>距离以米为单位。
-**actionStates [actionState]** |  | array | 包含当前订单中所有动作状态的数组。只要当前订单仍处于活动状态，这些动作状态就会保留；接受新订单时将清除这些状态。<br>其中可能包括之前节点上仍在进行的动作。<br><br>动作完成时，将发布更新后的状态消息，其中 `actionStatus` 设置为 'FINISHED'，并在适用时包含相应的 `resultDescription`。
+**actionStates [actionState]** |  | array | 包含当前订单中所有动作状态的数组。只要当前订单仍处于活动状态，这些动作状态就会保留；接受新订单时将清除这些状态。<br>其中可能包括之前节点上仍在进行的动作。<br><br>动作完成时，将发布更新后的状态消息，其中 `actionStatus` 设置为 'FINISHED'，并在适用时包含相应的 `actionResult`。
 **instantActionStates [actionState]** |  | array | 移动机器人收到的所有即时动作状态组成的数组。即时动作状态应保留在状态消息中，直到执行 `clearInstantActions` 动作。如果列表过长而难以管理，机器人可以报告 `errorType` 为 'INSTANT_ACTION_STATES_FULL'、`errorLevel` 为 'URGENT' 的错误。建议车队控制在实际可行时尽快清除此列表。
 ***zoneActionStates [actionState]*** |  | array | 所有已处于终止状态或当前正在运行的区域动作状态组成的数组；是否共享尚未执行的动作可由实现选择。区域动作状态应保留在状态消息中，直到执行 `clearZoneActions` 动作。如果支持动作区域，则必须提供该字段。如果列表过长而难以管理，机器人可以报告 `errorType` 为 'ZONE_ACTION_STATES_FULL'、`errorLevel` 为 'URGENT' 的错误。建议车队控制在实际可行时尽快清除此列表。
 **powerSupply** |  | JSON object | 包含所有与电源相关的信息。
@@ -1721,7 +1742,7 @@ mapStatus |  | string | 枚举 {'ENABLED', 'DISABLED'}<br>'ENABLED'：表示移�
 对象结构 | 单位 | 数据类型 | 描述
 --- | --- | --- | ---
 **zoneSet** { |  | JSON object |
-zoneSetId |  | string | 当前为地图启用的区域集的唯一标识符。<br>只有当移动机器人在对应地图上没有定义区域时，该字段才应保持空。
+zoneSetId |  | string | 区域集的唯一标识符。
 mapId |  | string | 对应地图的标识符。
 zoneSetStatus<br>} |  | string | 枚举 {'ENABLED', 'DISABLED'}<br>'ENABLED'：表示移动机器人当前正在使用该区域集。每张地图最多只能有一个区域集的状态设置为 'ENABLED'。<br>'DISABLED'：表示移动机器人当前未启用该区域集，因此车队控制可以启用或删除该区域集。
 
@@ -1797,7 +1818,7 @@ eta |  | string | 预计到达或经过时间。ETA 采用 `timestamp` 格式（
 **mobileRobotPosition** { |  | JSON object | 在项目特定坐标系中定义地图上的位置。每个楼层都有自己的地图。
 x | m | float64 | 地图上相对于项目特定坐标系的 x 位置。<br>精度取决于具体实现。
 y | m | float64 | 地图上相对于项目特定坐标系的 y 位置。<br>精度取决于具体实现。
-theta |  | float64 | 范围：[-Pi ... Pi]<br><br>移动机器人的朝向角。
+theta | rad | float64 | 范围：[-Pi ... Pi]<br><br>移动机器人的朝向角。
 mapId |  | string | 该位置所引用地图的唯一标识符。<br><br>每张地图具有相同的坐标原点。<br>当移动机器人乘坐电梯从出发楼层前往目标楼层时，它会离开出发楼层的地图，并出现在目标楼层地图中对应的电梯节点上。
 localized |  | boolean | `true`：移动机器人已定位，`x`、`y` 和 `theta` 的值可信。<br>`false`：移动机器人未定位，`x`、`y` 和 `theta` 的值不可信。<br>只有当移动机器人无法再确定自身位置时，才应将该状态改为 `false`。移动机器人应通过错误（`errorType` = 'LOCALIZATION_ERROR'，`errorLevel` = 'FATAL'）报告此状态。当该值为 `false` 时，移动机器人不得恢复自动行驶或继续执行当前订单。
 *localizationScore* |  | float64 | 范围：[0.0 ... 1.0]<br>描述定位质量，因此可以被 SLAM 移动机器人用来描述当前位置信息的准确性。<br>0.0：最低可能置信度<br>1.0：最高置信度。<br>仅用于日志记录和可视化。
@@ -1824,9 +1845,9 @@ localized |  | boolean | `true`：移动机器人已定位，`x`、`y` 和 `thet
 对象结构 | 单位 | 数据类型 | 描述
 --- | --- | --- | ---
 **boundingBoxReference** { |  | JSON object | 包围盒位置的参考点。<br>参考点始终位于包围盒底面中心（高度 = 0），并以移动机器人坐标系中的坐标描述。
-x |  | float64 | 参考点的 x 坐标。
-y |  | float64 | 参考点的 y 坐标。
-z |  | float64 | 参考点的 z 坐标。
+x | m | float64 | 参考点的 x 坐标。
+y | m | float64 | 参考点的 y 坐标。
+z | m | float64 | 参考点的 z 坐标。
 *theta*<br> } |  | float64 | 载荷包围盒的朝向角。<br>该字段对牵引车、拖车列车等尤为重要。
 
 对象结构 | 单位 | 数据类型 | 描述
@@ -1834,7 +1855,7 @@ z |  | float64 | 参考点的 z 坐标。
 **loadDimensions** { |  | JSON object | 载荷包围盒的尺寸（以米为单位）。
 length | m | float64 | 载荷包围盒的绝对长度（沿移动机器人坐标系的 x 轴）。
 width | m | float64 | 载荷包围盒的绝对宽度（沿移动机器人坐标系的 y 轴）。
-*height* <br>}| m | float64 | 载荷包围盒的绝对高度。<br><br>可选：只有已知值时才设定。
+*height* <br>} | m | float64 | 载荷包围盒的绝对高度。<br><br>可选：只有已知值时才设定。
 
 | **对象结构** | **数据类型** | **描述** |
 | --- | --- | --- |
@@ -1877,7 +1898,7 @@ charging |  | boolean | `true`：正在充电。<br>`false`：移动机器人当
 对象结构 | 单位 | 数据类型 | 描述
 --- | --- | --- | ---
 **error** { |  | JSON object |
-errorType |  | string | 错误类型，可扩展枚举，包括以下预定义值<br>枚举 {'UNSUPPORTED_PARAMETER', 'NO_ORDER_TO_CANCEL', 'VALIDATION_FAILURE', 'INVALID_ORDER_ACTION', 'OUTDATED_ORDER_UPDATE', 'SAME_ORDER_UPDATE_ID', 'ORDER_UPDATE_FOLLOWING_CANCEL', 'OUTSIDE_OF_CORRIDOR', 'DUPLICATE_MAP', 'DUPLICATE_ZONE_SET', 'BLOCKED_ZONE_VIOLATION', 'RELEASE_LOST', 'ZONE_ACTION_CONFLICT', 'NODE_UNREACHABLE', 'LOCALIZATION_ERROR', 'UNKNOWN_MAP_ID', ...}。
+errorType |  | string | 错误类型，可扩展枚举，包括以下预定义值<br>枚举 {'UNSUPPORTED_PARAMETER', 'NO_ORDER_TO_CANCEL', 'VALIDATION_FAILURE', 'INVALID_ORDER_ACTION', 'OUTDATED_ORDER_UPDATE', 'SAME_ORDER_UPDATE_ID', 'ORDER_UPDATE_FOLLOWING_CANCEL', 'OUTSIDE_OF_CORRIDOR', 'INSUFFICIENT_MEMORY', 'DUPLICATE_MAP', 'BLOCKED_ZONE_VIOLATION', 'DUPLICATE_ZONE_SET', 'RELEASE_LOSS_HANDLING', 'RELEASE_LOST', 'ZONE_ACTION_CONFLICT', 'NODE_UNREACHABLE', 'LOCALIZATION_ERROR', 'OTHER_ORDER_ACTIVE', 'START_NODE_OUT_OF_RANGE', 'MOBILE_ROBOT_NOT_AVAILABLE', 'UNKNOWN_MAP_ID', 'INSTANT_ACTION_STATES_FULL', 'ZONE_ACTION_STATES_FULL', ...}。
 ***errorReferences [errorReference]*** |  | array | 错误关联项数组，例如 `nodeId`、`edgeId`、`orderId` 或 `actionId`，用于提供与错误相关的更多信息。
 *errorDescription* |  | string | 详尽的描述，提供错误的细节和可能原因。
 ***errorDescriptionTranslations [translation]*** |  | array | 错误描述的翻译数组。如果集合中未包含某种语言，则应使用 `errorDescription` 字段的值（如有）作为默认值。
@@ -1901,7 +1922,7 @@ translationValue<br>} |  | string | 使用 `translationKey` 所指定语言的�
 --- | --- | --- | ---
 **info** { |  | JSON object |
 infoType |  | string | 信息类型/名称。
-*infoReferences [infoReference]* |  | array | 引用数组。
+***infoReferences [infoReference]*** |  | array | 引用数组。
 *infoDescriptor* |  | string | 一个用户定义、人类可读的名称或描述符。此信息不得用于逻辑目的。
 infoLevel<br>} |  | string | 枚举 {'DEBUG', 'INFO'}<br><br>'DEBUG'：用于调试。<br>'INFO'：用于可视化。
 
@@ -2005,7 +2026,7 @@ fieldViolation<br>} |  | boolean | 防护区域受到侵入（例如由激光传
 | &emsp;*order.edges* | uint32 | 移动机器人可处理的每个订单的最大边数。 |
 | &emsp;*node.actions* | uint32 | 移动机器人可处理的每个节点的最大动作数。 |
 | &emsp;*edge.actions* | uint32 | 移动机器人可处理的每条边的最大动作数。 |
-| &emsp;*actions.actionsParameters* | uint32 | 移动机器人可处理的每个动作的最大参数数。 |
+| &emsp;*action.actionsParameters* | uint32 | 移动机器人可处理的每个动作的最大参数数。 |
 | &emsp;*instantActions* | uint32 | 移动机器人可处理的每条消息中的最大即时动作数。 |
 | &emsp;*trajectory.knotVector* | uint32 | 移动机器人可处理的每条轨迹中节点值（knot）的最大数量。 |
 | &emsp;*trajectory.controlPoints* | uint32 | 移动机器人可处理的每条轨迹的最大控制点数。 |
@@ -2053,12 +2074,12 @@ fieldViolation<br>} |  | boolean | 防护区域受到侵入（例如由激光传
 | &emsp;&emsp;*isOptional* | boolean | `true`：可选参数。 |
 | &emsp;*}* |  |  |
 | &emsp;*actionResult* | string | 自由形式文本：结果描述。 |
-| &emsp;*blockingTypes* | array of enum | 用于定义动作的可能阻塞类型数组。<br>枚举 {'NONE', 'SOFT', 'SINGLE', 'HARD'}。 |
+| &emsp;*blockingTypes* | array of enum | 用于定义动作的可能阻塞类型数组。<br>枚举 {'NONE', 'SINGLE', 'SOFT', 'HARD'}。 |
 | &emsp;pauseAllowed | boolean | `true`：可以通过 `startPause` 暂停动作；`false`：无法暂停动作。 |
 | &emsp;cancelAllowed | boolean | `true`：可以通过 `cancelOrder` 取消动作；`false`：无法取消动作。 |
 | **}** |  |  |
 
-### `mobileRobotGeometry`
+#### `mobileRobotGeometry`
 
 该 JSON 对象定义移动机器人的几何属性，例如轮廓和车轮的位置。
 
@@ -2104,7 +2125,7 @@ fieldViolation<br>} |  | boolean | 防护区域受到侵入（例如由激光传
 
 | **字段** | **数据类型** | **描述** |
 | --- | --- | --- |
-| *loadPositions* | array of string | 移动机器人的载荷位置或载荷搬运装置数组。<br>该数组列出 `state.loads[].loadPosition` 字段的有效值，以及 `pick` 和 `drop` 动作中 `lhd` 参数的有效值。<br>*如果该数组不存在或为空，则移动机器人没有载荷搬运装置。* |
+| *loadPositions* | array of string | 移动机器人的载荷位置或载荷搬运装置数组。<br>该数组列出 `state.loads[].loadPosition` 字段的有效值，以及 `pick` 和 `drop` 动作中 `loadHandlingDevice` 参数的有效值。<br>*如果该数组不存在或为空，则移动机器人没有载荷搬运装置。* |
 | ***loadSets [loadSet]*** | array | 移动机器人能够搬运的载荷集数组。 |
 | { |  |  |
 | &emsp;setName | string | 载荷集的唯一名称，例如 `"DEFAULT"`、`"SET1"` 等。 |
@@ -2133,7 +2154,7 @@ fieldViolation<br>} |  | boolean | 防护区域受到侵入（例如由激光传
 
 | **字段** | **数据类型** | **描述** |
 | --- | --- | --- |
-| ***versions [version]*** | array | 包含软硬件信息的键值对对象数组。 |
+| ***versions[versionInfo]*** | array | 包含软硬件信息的键值对对象数组。 |
 | *{* |  |  |
 | &emsp;key | string | 所用软件或硬件版本的键（例如 `"softwareVersion"`）。 |
 | &emsp;value | string | 与该键对应的版本（例如 `"v1.12.4-beta"`）。 |
@@ -2157,7 +2178,7 @@ fieldViolation<br>} |  | boolean | 防护区域受到侵入（例如由激光传
 文件 | 版本 | 描述
 --- | --- | ---
 ISO 3691-4 | 2023 年 12 月 | 工业卡车安全要求与验证——第四部分：无人驾驶卡车及其系统
-ISO 9787 | 2013 年 5 月 | 机器人与机器人装置——坐标系与运动命名法
+ISO 9787 | 2013 年 5 月 | 机器人与机器人装置：坐标系与运动命名法
 ISO 639 | 2023 年 11 月 | 用于表示世界语言和语言群体的语言代码
-ISO 8601 | 2019 年 2 月 | 日期和时间——信息交换的表示
-LIF - 布局交换格式 | 2024 年 3 月 | LIF 是一种用于无人驾驶移动机器人系统集成方与（第三方）车队控制系统之间交换布局信息的格式。
+ISO 8601 | 2019 年 2 月 | 日期和时间：信息交换的表示
+LIF – 布局交换格式 | 2024 年 3 月 | LIF 是一种用于无人驾驶移动机器人系统集成方与（第三方）车队控制系统之间交换布局信息的格式。
