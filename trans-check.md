@@ -39,7 +39,6 @@
 - `EN-300-15` / `EN-301-02`：`actionStatus` 仍错误引用 `Table 2`。
 - `EN-300-16`：英文仍使用 `actionsStates`。
 - `EN-300-19`：英文多处具体字符串示例未使用 JSON 双引号。
-- `EN-300-20`：响应对象表的 Markdown 管道符格式仍未统一。
 - `EN-300-23` / `EN-301-05`：英文 factsheet 仍使用单数 `response.*`。
 - `EN-300-24`：英文文档与 Schema 对 `actions.actionsParameters` / `action.actionsParameters` 的定义不一致。
 - `EN-300-27`：英文仍多次使用不自然的 `Receival`。
