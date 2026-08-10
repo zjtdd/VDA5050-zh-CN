@@ -1638,8 +1638,8 @@ serialNumber | string | 移动机器人的序列号。
 | zoneSet { | JSON object | 详细描述特定地图的区域集。 |
 | mapId | string | 该区域集所描述地图的全局唯一标识符。 |
 | zoneSetId | string | 区域集的全局唯一标识符。 |
-| **zones[zone]** <br> } | array | 区域对象数组。 |
 | *zoneSetDescriptor* | string | 一个用户定义、人类可读的名称或描述符。此信息不得用于逻辑目的。 |
+| **zones[zone]** <br> } | array | 区域对象数组。 |
 
 单个区域对象具有以下结构：
 
