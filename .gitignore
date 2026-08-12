@@ -1,5 +1,6 @@
 # ingnore eclipse .project file
 .project
 .vscode
+.obsidian
 *.pdf
 .DS_Store
